@@ -1,71 +1,105 @@
-import { Image, StyleSheet, Text, View, TextInput, Button } from "react-native";
 import { useState } from "react";
-import { KeyboardAvoidingView } from "react-native";
-// import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { View, Text, StyleSheet, TextInput, Image, Button } from "react-native";
+import { Entypo } from "@expo/vector-icons";
+import * as ImagePicker from "expo-image-picker";
 
 const user = {
   id: "u1",
   image:
     "https://notjustdev-dummy.s3.us-east-2.amazonaws.com/avatars/vadim.jpg",
-  name: "Biraj Karki",
+  name: "Vadim Savin",
 };
 
 const CreatePostScreen = () => {
-  // const insets = useSafeAreaInsets();
-
   const [description, setDescription] = useState("");
-  const onSubmit = () => {
-    console.warn("on sumit", description);
+  const [image, setImage] = useState(null);
+
+  const onPost = () => {
+    console.warn("Posting: ", description);
     setDescription("");
   };
+
+  const pickImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    console.log(result);
+
+    if (!result.cancelled) {
+      setImage(result.uri);
+    }
+  };
+
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
-      style={[styles.container, { marginBottom: 10 }]}
-      contentContainerStyle={{ flex: 1 }}
-      // keyboardVerticalOffset={150}
-    >
+    <View style={styles.container}>
+      <Text>Create Post Screen</Text>
+
       <View style={styles.header}>
-        <Image source={{ uri: user.image }} style={styles.image} />
+        <Image source={{ uri: user.image }} style={styles.profileImage} />
         <Text style={styles.name}>{user.name}</Text>
+        <Entypo
+          onPress={pickImage}
+          name="images"
+          size={24}
+          color="limegreen"
+          style={styles.icon}
+        />
       </View>
+
       <TextInput
+        placeholder="What's on your mind?"
         value={description}
         onChangeText={setDescription}
-        placeholder="Whats's on your mind?"
+        style={styles.input}
         multiline
       />
+      <Image source={{ uri: image }} style={styles.image} />
+
       <View style={styles.buttonContainer}>
-        <Button title="Post" onPress={onSubmit} />
+        <Button onPress={onPost} title="Post" disabled={!description} />
       </View>
-    </KeyboardAvoidingView>
+    </View>
   );
 };
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: "white",
     width: "100%",
     padding: 10,
     paddingTop: 30,
-    backgroundColor: "#fff",
   },
   header: {
+    padding: 10,
     flexDirection: "row",
     alignItems: "center",
     width: "100%",
-    marginBottom: 10,
   },
-  image: {
+  profileImage: {
     width: 40,
     height: 40,
-    borderRadius: 30,
+    borderRadius: 25,
     marginRight: 10,
   },
   name: {
     fontWeight: "500",
   },
+  input: {},
   buttonContainer: {
     marginTop: "auto",
   },
+  icon: {
+    marginLeft: "auto",
+  },
+  image: {
+    width: "100%",
+    aspectRatio: 4 / 3,
+  },
 });
+
 export default CreatePostScreen;
