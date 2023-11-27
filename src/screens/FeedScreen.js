@@ -1,6 +1,6 @@
-import { FlatList, StyleSheet, Image, Text, Pressable } from "react-native";
-import FeedPost from "../components/FeedPost";
+import { FlatList, Pressable, Image, Text, StyleSheet } from "react-native";
 import posts from "../../assets/data/posts.json";
+import FeedPost from "../components/FeedPost";
 import { Entypo } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 
@@ -18,7 +18,6 @@ const FeedScreen = () => {
     <FlatList
       data={posts}
       renderItem={({ item }) => <FeedPost post={item} />}
-      showsVerticalScrollIndicator={false}
       ListHeaderComponent={() => (
         <Pressable onPress={createPost} style={styles.header}>
           <Image source={{ uri: img }} style={styles.profileImage} />
