@@ -6,23 +6,9 @@ import {
   FontAwesome5,
   MaterialCommunityIcons,
 } from "@expo/vector-icons";
-const post = {
-  id: "p1",
-  createdAt: "9 m",
-  User: {
-    id: "u1",
-    image:
-      "https://notjustdev-dummy.s3.us-east-2.amazonaws.com/avatars/zuck.jpeg",
-    name: "Biraj Karki",
-  },
-  description:
-    "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.",
-  image: "https://notjustdev-dummy.s3.us-east-2.amazonaws.com/images/1.jpg",
-  numberOfLikes: 11,
-  numberOfShares: 2,
-};
 
-const FeedPost = () => {
+const FeedPost = (props) => {
+  const post = props.post;
   return (
     <View style={styles.post}>
       {/* header  */}
